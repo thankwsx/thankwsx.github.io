@@ -4,8 +4,37 @@
 <title>SafeFrame Demo</title>
 </head>
 <body>
+  <div id="ad_demo"></div>
   <script type="text/javascript" src="http://s3-us-west-2.amazonaws.com/sftemp/sf_v1.0.1/js/lib/base.js"></script>
   <script type="text/javascript" src="http://s3-us-west-2.amazonaws.com/sftemp/sf_v1.0.1/js/host/host.js"></script>
   <script type="text/javascript" src="http://s3-us-west-2.amazonaws.com/sftemp/sf_v1.0.1/js/lib/boot.js"></script>
+  <script type="text/javascript" >
+/**
+* Initialize a new SafeFrames publisher configuration
+*/
+  (function() {
+    var conf  = new $sf.host.Config({
+      // Should be absolute path to render file hosted on CDN
+      renderFile:   "http://s3-us-west-2.amazonaws.com/sftemp/sf_v1.0.1/html/r.html",
+      positions: {}
+    });
+
+  })();
+</script>
+
+
+<script type='text/x-safeframe' class='sf_data' >
+{
+   "id" : "myAdPlacement145",
+   "html" : "<style>html,body { height:100%;background:#FFBF00;}</style>\n<p>\n<div style='display:inline-block;'>\n<button onclick='pushDownAd();'>Expand</button>\n<button onclick='collapseAd();'>Collapse</button>\n</div>\n<span style='font-weight:bold;font-size:1.2em;'>Pushdown Sample</span>\n\nPush expansion requires that the ad position be explicitly marked to support the parameter \"exp-push\"\nby the host page.  Additionally, any enclosing DOM elements <b>MUST NOT</b> have an explicit height\nor width defined and they must not be absolutely positioned.\n</p>\n<p>\nSmooth expansion transitions may be achieved using CSS.\n</p>\n<div id=\"feedback\"></div>\n<scr"+"ipt>\nvar extern = window.extern || $sf.ext;\nvar sfAPI = extern;\n\n function writeLog(message){\n  //debugger;\n  var el = document.getElementById(\"feedback\");\n  if(el) el.innerHTML += message + \"<br />\";\n }\n \n function status_update(status, data)\n {\n  if(status == \"expanded\"){\n  } \n  else if (status == \"geom-update\") {\n   // update viewability\n  }\n }\n /**\n * Expand the ad by calling the SafeFrame API\n */\n function pushDownAd(){\n  var g, ex, obj;\n\n  if ($sf.ext) {\n   try {\n    g = $sf.ext.geom(); // the geometry object\n    ex = g && g.exp;\n obj = {};\n obj.l=0;\n obj.r=0;\n obj.t=-30;\n obj.b=350;\n obj.push=true;\n    //if (Math.abs(ex.l) >= expandedWidth && Math.abs(ex.t) >= expandedHeight) {\n      $sf.ext.expand(obj);\n    //}\n   } catch (e) {\n    //do not expand, not enough room\n   }\n  } else {\n   //api expansion not supported\n  }\n } \n\n function collapseAd(){\n  $sf.ext.collapse();\n }\n\n if (extern) {\n  try {\n   extern.register(350, 200, status_update);\n  } catch (e) {\n   writeLog(\"Exception or no safeframes available: \" + e.message);\n  }\n }\n \n// Expand the ad on mouseover\n(function(){\n/*\n setTimeout(function(){\n  var body = document.getElementsByTagName('body')[0];\n  body.style.height='100%';\n  body.addEventListener('mouseover', function(){\n   pushDownAd();\n  });\n  body.addEventListener('mouseout', function(){\n   collapseAd();\n  });\n }, 100);\n */\n})(); \n</scr"+"ipt>\n",
+   "conf" : {
+     "size" : "920x150",
+     "dest" : "ad_demo",
+     "supports" : {
+       "exp-push" : "1"
+     }
+  }
+}
+</script>
 </body>
 </html>
